@@ -1,0 +1,19 @@
+/* CSS */
+::-webkit-scrollbar {
+    scrollbar-width: thin;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #e2e8f0;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #313943;
+  }
+  
+  @media (hover: hover) {
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+  }
+  

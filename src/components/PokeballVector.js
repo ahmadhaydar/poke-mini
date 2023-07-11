@@ -3,7 +3,7 @@ import { Box } from "@chakra-ui/react";
 const PokeballVector = ({ color, ...props }) => (
   <Box {...props}>
     <svg
-      width="100%`"
+      width="100%"
       height="100%"
       viewBox="0 0 257 257"
       fill="none"
