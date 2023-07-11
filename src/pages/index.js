@@ -11,7 +11,7 @@ import {
   Skeleton,
   VStack,
 } from "@chakra-ui/react";
-import PokeballVector from "./components/PokeballVector";
+import PokeballVector from "../components/PokeballVector";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import React from "react";
 
