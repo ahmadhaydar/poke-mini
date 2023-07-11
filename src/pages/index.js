@@ -38,7 +38,7 @@ export default function Home() {
   }
 
   return (
-    <Flex w="100vw" h="100vh" overflow="auto">
+    <Flex w="100vw" h="100vh" overflow="auto" onScroll={handleScroll}>
       <Flex p="5" flexDir="column" flex="1">
         <Heading mb={8} fontColor="#313943">
           Pokedex
