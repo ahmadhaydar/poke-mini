@@ -120,7 +120,7 @@ const PokemonButton = ({ pokeData }) => {
         overflow="hidden"
       >
         <Heading color="rgba(0, 0, 0, 0.2)" align="end" size="sm">
-          #001
+          #{data?.id}
         </Heading>
         <Flex flex={1}>
           <Flex direction="column" align="start">
