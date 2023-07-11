@@ -17,12 +17,12 @@ import React from "react";
 
 export default function Home() {
   const fetchPokemons = ({
-    pageParam = "https://pokeapi.co/api/v2/pokemon?limit=20",
+    pageParam = "https://pokeapi.co/api/v2/pokemon?limit=80",
   }) => {
     return fetch(pageParam).then((res) => res.json());
   };
 
-  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery(
+  const { data, fetchNextPage, isFetchingNextPage, isFetching } = useInfiniteQuery(
     ["pokemons"],
     fetchPokemons,
     {
@@ -31,6 +31,11 @@ export default function Home() {
       },
     }
   );
+
+  handleScroll = (e) => {
+    const bottom = e.target.scrollHeight - e.target.scrollTop === e.target.clientHeight;
+    if (bottom && !isFetchingNextPage) fetchNextPage();
+  }
 
   return (
     <Flex w="100vw" h="100vh" overflow="auto">
@@ -44,13 +49,22 @@ export default function Home() {
               <PokemonButton key={pokemon.name} pokeData={pokemon} />
             ))
           )}
-          <Button
-            colorScheme="teal"
-            onClick={fetchNextPage}
-            height="128px"
-            isLoading={isFetchingNextPage}
-            isDisabled={isFetchingNextPage}
-          />
+          {
+            isFetching && (
+              <>
+                <PokemonButton />
+                <PokemonButton />
+                <PokemonButton />
+                <PokemonButton />
+                <PokemonButton />
+                <PokemonButton />
+                <PokemonButton />
+                <PokemonButton />
+                <PokemonButton />
+                <PokemonButton />
+              </>
+            )
+          }
         </SimpleGrid>
       </Flex>
     </Flex>
@@ -81,6 +95,7 @@ const PokemonButton = ({ pokeData }) => {
     },
     {
       refetchOnWindowFocus: false,
+      enabled: !!pokeData,
     }
   );
 
