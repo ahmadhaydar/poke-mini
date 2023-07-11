@@ -192,7 +192,8 @@ const PokemonButton = ({ pokeData, onClick = () => {} }) => {
           transition: "transform 0.2s",
         }}
         _active={{
-          transform: "scale(0.5)",
+          transform: "scale(0.95)",
+          transition: "transform 0.2s",
         }}
         userSelect="none"
         rounded="2xl"
