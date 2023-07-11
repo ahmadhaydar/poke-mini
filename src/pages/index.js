@@ -53,9 +53,11 @@ export default function Home() {
         <SimpleGrid minChildWidth="155px" spacing={4}>
           {data?.pages.map((page) =>
             page.results.map((pokemon) => (
-              <PokemonButton key={pokemon.name} onClick={
-                (e) => setPokemonData(e)
-              } pokeData={pokemon} />
+              <PokemonButton
+                key={pokemon.name}
+                onClick={(e) => setPokemonData(e)}
+                pokeData={pokemon}
+              />
             ))
           )}
           {isFetchingNextPage && (
@@ -112,7 +114,11 @@ export default function Home() {
             </Heading>
             <HStack>
               {pokemonData?.types.map((type) => (
-                <TypeBadge key={type.type.name} value={type.type.name} fontSize="sm"/>
+                <TypeBadge
+                  key={type.type.name}
+                  value={type.type.name}
+                  fontSize="sm"
+                />
               ))}
             </HStack>
           </VStack>
