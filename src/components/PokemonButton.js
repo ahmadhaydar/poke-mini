@@ -10,16 +10,7 @@ import { TypeBadge } from "./TypeBadge";
 import { colorDict } from "src/components/colorDict";
 
 export const PokemonButton = ({ pokeData, onClick = () => { } }) => {
-  const { data } = useQuery(
-    ["pokemon", pokeData?.name],
-    async () => {
-      return fetch(pokeData?.url).then((res) => res.json());
-    },
-    {
-      refetchOnWindowFocus: false,
-      enabled: !!pokeData,
-    }
-  );
+  const data = pokeData
 
   return (
     <Skeleton rounded="2xl" isLoaded={data}>
@@ -30,7 +21,7 @@ export const PokemonButton = ({ pokeData, onClick = () => { } }) => {
         p={3}
         direction="column"
         height="128px"
-        bgColor={colorDict[data?.types[0].type.name]}
+        bgColor={colorDict[data?.types[0]]}
         _hover={{
           transform: "scale(1.05)",
           transition: "transform 0.2s",
@@ -57,8 +48,8 @@ export const PokemonButton = ({ pokeData, onClick = () => { } }) => {
               {data?.name}
             </Heading>
             <VStack align="start" spacing="1">
-              {data?.types.map((type) => (
-                <TypeBadge key={type.type.name} value={type.type.name} />
+              {data?.types.map((type, i) => (
+                <TypeBadge key={i} value={type} />
               ))}
             </VStack>
           </Flex>
@@ -74,24 +65,23 @@ export const PokemonButton = ({ pokeData, onClick = () => { } }) => {
               color="rgba(255, 255, 255, 0.2)" />
             <Box
               position="absolute"
-              right="10%"
+              right="-20%"
               bottom="-10%"
-              width={{
+              w={{
                 base: "64px",
-                md: "80px",
+                sm: "96px",
               }}
-              height={{
+              h={{
                 base: "64px",
-                md: "80px",
+                sm: "96px",
               }}
+              zIndex="1"
+              overflow="hidden"
             >
               <Image
-                boxSize={{
-                  base: "64px",
-                  md: "80px",
-                }}
+                boxSize="100%"
                 loading="lazy"
-                src={data?.sprites.other["official-artwork"].front_default} />
+                src={data?.sprite} />
             </Box>
           </Box>
         </Flex>

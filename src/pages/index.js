@@ -2,6 +2,7 @@ import {
   Flex,
   Heading,
   SimpleGrid,
+  Spinner,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -13,20 +14,44 @@ export default function Home() {
   const fetchPokemons = async ({
     pageParam = "https://pokeapi.co/api/v2/pokemon?limit=100",
   }) => {
-    return fetch(pageParam).then((res) => res.json());
+    return fetch(pageParam)
+      .then((res) => res.json())
+      .then((data) => {
+        const pokemons = data.results.map(async (pokemon) => {
+          const pokemonData = await fetch(pokemon.url).then((res) =>
+            res.json()
+          );
+          return {
+            id: pokemonData.id,
+            name: pokemonData.name,
+            types: pokemonData.types.map((type) => type.type.name),
+            sprite: pokemonData.sprites.front_default,
+            url: pokemon.url,
+          };
+        });
+        return Promise.all(pokemons).then((pokemons) => {
+          return {
+            next: data.next,
+            results: pokemons,
+          };
+        });
+      });
   };
 
-  const { data, fetchNextPage, isFetchingNextPage } =
-    useInfiniteQuery(["pokemons"], fetchPokemons, {
+  const { data, fetchNextPage, isFetching } = useInfiniteQuery(
+    ["pokemons"],
+    fetchPokemons,
+    {
       getNextPageParam: (lastPage, pages) => {
         return lastPage.next;
       },
-    });
+    }
+  );
 
   const handleScroll = (e) => {
     const bottom =
       e.target.scrollHeight - e.target.scrollTop <= e.target.clientHeight + 100;
-    if (bottom && !isFetchingNextPage) fetchNextPage();
+    if (bottom && !isFetching) fetchNextPage();
   };
 
   const [pokemonData, setPokemonData] = React.useState(null);
@@ -45,9 +70,12 @@ export default function Home() {
         <Heading mb={8} textColor="#313943">
           Pokedex
         </Heading>
-        <SimpleGrid minChildWidth="155px" spacing={4}>
+        <SimpleGrid minChildWidth={{
+          base: "128px",
+          sm: "160px",
+        }} spacing={4}>
           {data?.pages.map((page) =>
-            page.results.map((pokemon) => (
+            page?.results.map((pokemon) => (
               <PokemonButton
                 key={pokemon.name}
                 onClick={(e) => {
@@ -58,33 +86,21 @@ export default function Home() {
               />
             ))
           )}
-          {isFetchingNextPage && (
-            <>
-              <PokemonButton />
-              <PokemonButton />
-              <PokemonButton />
-              <PokemonButton />
-              <PokemonButton />
-              <PokemonButton />
-              <PokemonButton />
-              <PokemonButton />
-              <PokemonButton />
-              <PokemonButton />
-            </>
-          )}
         </SimpleGrid>
+        {isFetching && (
+          <Flex mt="8" width="100%" align="center" justify="center">
+            <Spinner size="lg" thickness="4px" />
+          </Flex>
+        )}
       </Flex>
-      {pokemonData && (
-        <PokemonDrawer
-          onClose={() => {
-            onClose();
-            setPokemonData(null);
-          }}
-          isOpen={isOpen}
-          pokemonData={pokemonData}
-        />
-      )}
+      <PokemonDrawer
+        onClose={() => {
+          onClose();
+          setPokemonData(null);
+        }}
+        isOpen={isOpen}
+        pokeData={pokemonData}
+      />
     </Flex>
   );
 }
-
