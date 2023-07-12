@@ -34,7 +34,7 @@ export default function Home() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <Flex w="100vw" h="100vh">
+    <Flex w="100dvw" h="100dvh">
       <Flex
         p="5"
         flexDir="column"
