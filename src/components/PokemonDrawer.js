@@ -16,7 +16,7 @@ import PokeballVector from "src/components/PokeballVector";
 import React from "react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { TypeBadge } from "src/components/TypeBadge";
-import { colorDict } from "./colorDict";
+import { colorDict } from "src/utils/colorDict";
 import { useQuery } from "@tanstack/react-query";
 
 export const PokemonDrawer = ({ onClose, isOpen, pokeData }) => {
