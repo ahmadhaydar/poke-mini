@@ -7,7 +7,7 @@ import PokeballVector from "./PokeballVector";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
 import { TypeBadge } from "./TypeBadge";
-import { colorDict } from "src/components/colorDict";
+import { colorDict } from "src/utils/colorDict";
 
 export const PokemonButton = ({ pokeData, onClick = () => { } }) => {
   const data = pokeData
